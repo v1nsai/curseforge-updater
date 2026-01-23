@@ -1,10 +1,9 @@
 #!/bin/bash
 
 set -eou pipefail
-source .env
 
 # Init and check vars
-MOD_FOLDER="/home/doctor_ew/hytale/hytale-server-docker/server-files/mods"
+MOD_FOLDER="$1"
 UPDATED_MODS=()
 MOD_DATA_JSON="{}"
 
@@ -141,3 +140,5 @@ else
     echo "- $MOD"
   done
 fi
+
+exit 0

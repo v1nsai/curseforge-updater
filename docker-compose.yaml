@@ -1,0 +1,20 @@
+services:
+  test-service:
+    image: alpine:latest
+    container_name: test-service
+    command: ["sh", "-c", "echo Hello, World! && sleep 3600"]
+    depends_on:                                         # add these lines to
+      curseforge-updater:                               # your server's service          
+        condition: service_completed_successfully       # in your docker-compose.yaml
+
+  curseforge-updater:
+    build: 
+      context: https://github.com/v1nsai/curseforge-updater.git#develop
+      # context: ./ # uncomment for local development
+      dockerfile: Dockerfile
+    container_name: curseforge-updater
+    restart: "no"
+    volumes:
+      - ./path/to/mods/folder:/mods # change to your mods folder path
+    env_file:
+      - .env
