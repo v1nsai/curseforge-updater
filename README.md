@@ -21,5 +21,5 @@ The easiest way to get started is to copy the `docker-compose.yaml` file into yo
 ## Development
 Uncomment the `$.services.curseforge-updater.build.context` to use your local Dockerfile instead of the latest in git.  See [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) for details
 
-Clean rebuild one-liner:
+Clean rebuild one-liner:  
 `docker compose down && docker compose build --no-cache && docker compose up -d --force-recreate && docker compose logs -f`
