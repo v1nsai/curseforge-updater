@@ -10,10 +10,12 @@ The easiest way to get started is to copy the `docker-compose.yaml` file into yo
 * Copy the `curseforge-updater` service from the `docker-compose.yaml` in this repo to your `docker-compose.yaml` file
 * To make sure `curseforge-updater` runs and completes successfully before your service starts, add the following to your game server's service in your `docker-compose.yaml`:
     ```yaml
-    my-game-service:
-        depends_on:
-            curseforge-updater:
-                condition: service_completed_successfully
+    services:
+        my-game-service:
+            // the rest of your service definition
+            depends_on:
+                curseforge-updater:
+                    condition: service_completed_successfully
     ```
     See the [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) for a full example
 * Map the `/mods` folder to the folder containing all your game's mods in `curseforge-updater`'s volumes.  See [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) for details
