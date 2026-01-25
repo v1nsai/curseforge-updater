@@ -51,6 +51,7 @@ for MOD_FILEPATH in "${MOD_FILEPATHS[@]}"; do
   fi
 done
 
+# echo "MOD_DATA_JSON: $MOD_DATA_JSON" # TODO REMOVE
 FINGERPRINTS=($(echo "$MOD_DATA_JSON" | jq -r 'keys[]'))
 if [ ${#FINGERPRINTS[@]} -eq 0 ]; then
   echo "No fingerprints were generated. Exiting."
@@ -86,7 +87,7 @@ else
     echo "- Mod ID: $PARTIAL_MOD_ID for file $PARTIAL_FILENAME did not match exactly. Please report this issue on the GitHub repo."
     exit 1
   done
-fi 
+fi
 echo "Checking for exact matches..."
 readarray -t MATCHES < <(echo "$FINGERPRINT_RESPONSE" | jq -c '.data.exactMatches[]')
 if [ ${#MATCHES[@]} -eq 0 ]; then

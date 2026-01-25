@@ -2,7 +2,8 @@ FROM python:3.11-slim
 
 RUN apt update && \
     apt install -y jq curl && \
-    apt clean
+    apt clean && \
+    python3 -m pip install --no-cache-dir murmurhash2
 
 COPY entrypoint.sh /entrypoint.sh
 COPY fingerprint.py /fingerprint.py
