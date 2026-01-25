@@ -4,7 +4,9 @@ This is a Dockerized script that scans your game's mod folder and updates mods f
 Use with caution since it isn't highly tested yet.  At the moment it will loudly fail if anything unexpected happens, rather than letting silent failures cause a bigger problem.
 
 ## Usage
-The easiest way to get started is to copy the `docker-compose.yaml` file into your project's compose file, it will pull and build the latest from the `develop` branch of this repo.
+The easiest way to get started is to simply run the `docker-compose.yaml` file, just update the volume path with the location of your mods folder.
+
+You can also copy the `docker-compose.yaml` file into your project's compose file, it will pull and build the latest from the `develop` branch of this repo, so your mods get updated every time you restart your server. 
 
 * Copy the [.env.example](https://github.com/v1nsai/curseforge-updater/blob/develop/.env.example) file into the same folder as your `docker-compose.yaml` file as `.env` and fill in the variables
 * Copy the `curseforge-updater` service from the `docker-compose.yaml` in this repo to your `docker-compose.yaml` file
