@@ -22,10 +22,10 @@ fi
 
 # get filepaths of all .jar and .zip files in mod folder
 echo "Scanning mod folder: $MOD_FOLDER"
-MOD_FILEPATHS=$(find "$MOD_FOLDER" -type f \( -name "*.jar" -o -name "*.zip" \))
+readarray -t MOD_FILEPATHS < <(find "$MOD_FOLDER" -type f \( -name "*.jar" -o -name "*.zip" \))
 
 # Generate fingerprints for found mod files
-for MOD_FILEPATH in $MOD_FILEPATHS; do
+for MOD_FILEPATH in "${MOD_FILEPATHS[@]}"; do
   if [ -f "$MOD_FILEPATH" ]; then
     echo "Processing mod file: $MOD_FILEPATH"
     MOD_FILENAME=$(basename "$MOD_FILEPATH")
@@ -33,6 +33,16 @@ for MOD_FILEPATH in $MOD_FILEPATHS; do
     echo "Calculating fingerprint for: $MOD_FILENAME..."
     FINGERPRINT=$(python3 fingerprint.py "$MOD_FILEPATH")
     if [ -n "$FINGERPRINT" ]; then
+      # Check if fingerprint already exists
+      EXISTING=$(echo "$MOD_DATA_JSON" | jq -r --arg fingerprint "$FINGERPRINT" '.[$fingerprint] // empty')
+      if [ -n "$EXISTING" ]; then
+        echo "ERROR: Fingerprint collision detected!"
+        echo "  Fingerprint: $FINGERPRINT"
+        echo "  Existing file: $EXISTING"
+        echo "  New file: $MOD_FILEPATH"
+        echo "  These mods may be duplicates with different filenames or zero bytes in size due to a transfer issue."
+        exit 1
+      fi
       MOD_DATA_JSON=$(echo "$MOD_DATA_JSON" | jq --arg fingerprint "$FINGERPRINT" --arg filepath "$MOD_FILEPATH" '. + {($fingerprint): $filepath}')
     else
       echo "Error: Could not calculate fingerprint for $MOD_FILENAME."
@@ -50,12 +60,13 @@ FINGERPRINT_STRING=$(IFS=,; echo "${FINGERPRINTS[*]}")
 
 # Match fingerprints
 echo "Querying CurseForge API for found fingerprints..."
-FINGERPRINT_RESPONSE=$(curl -s -X POST "https://api.curseforge.com/v1/fingerprints" \
+FINGERPRINT_RESPONSE=$(curl -s -X POST "https://api.curseforge.com/v1/fingerprints/$GAME_ID" \
   -H "Accept: application/json" \
   -H "x-api-key: $CURSEFORGE_API_KEY" \
   -H "Content-Type: application/json" \
   -d "{\"fingerprints\": [$FINGERPRINT_STRING]}")
 
+# echo "FINGERPRINT RESPONSE: $FINGERPRINT_RESPONSE" # TODO REMOVE
 if ! echo "$FINGERPRINT_RESPONSE" | jq -e '.data.unmatchedFingerprints == null' > /dev/null; then
   UNMATCHED_FINGERPRINTS=$(echo "$FINGERPRINT_RESPONSE" | jq -r '.data.unmatchedFingerprints | join(", ")')
   echo "Error: Some fingerprints did not match any mods on CurseForge."
