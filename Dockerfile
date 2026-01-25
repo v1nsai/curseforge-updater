@@ -1,12 +1,10 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 RUN apt update && \
     apt install -y jq curl && \
     apt clean && \
-    python3 -m pip install --no-cache-dir murmurhash2
+    python3 -m pip install --no-cache-dir murmurhash2 requests
 
-COPY entrypoint.sh /entrypoint.sh
-COPY fingerprint.py /fingerprint.py
-RUN chmod +x /entrypoint.sh
+COPY updater.py /updater.py
 
-ENTRYPOINT ["/entrypoint.sh", "/mods"]
+ENTRYPOINT ["python3", "/updater.py", "/mods"]
