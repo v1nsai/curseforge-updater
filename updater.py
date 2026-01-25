@@ -61,11 +61,11 @@ if __name__ == "__main__":
             if fingerprint is not None:
                 # Check if fingerprint already exists
                 if fingerprint in mod_data:
-                    print("ERROR: Fingerprint collision detected!")
+                    print("ERROR: Fingerprint collision detected!  This should not happen.")
                     print(f"  Fingerprint: {fingerprint}")
                     print(f"  Existing file: {mod_data[fingerprint]}")
                     print(f"  New file: {mod_filepath}")
-                    print("  These mods may be duplicates with different filenames or zero bytes in size due to a transfer issue.")
+                    print("  These mods are likely to be duplicates with different filenames or zero bytes in size due to a transfer issue.")
                     sys.exit(1)
                 mod_data[fingerprint] = str(mod_filepath)
             else:
@@ -99,12 +99,15 @@ if __name__ == "__main__":
         print(f"Error querying CurseForge API: {e}")
         sys.exit(1)
     
-    # Check for unmatched fingerprints
+    # Check for unmatched fingerprintsj
+    print("Checking for unmatched fingerprints...")
     unmatched = fingerprint_response.get("data", {}).get("unmatchedFingerprints")
     if unmatched:
         print("Error: Some fingerprints did not match any mods on CurseForge.")
         print(f"Unmatched fingerprints: {', '.join(map(str, unmatched))}")
         sys.exit(1)
+    else:
+        print("No unmatched fingerprints found.")
     
     # Check for partial matches
     print("Checking for partial matches...")
@@ -117,7 +120,7 @@ if __name__ == "__main__":
             partial_fingerprint = str(partial.get("fileFingerprint"))
             partial_mod_id = partial.get("id")
             partial_filename = Path(mod_data.get(partial_fingerprint, "")).name
-            print(f"- Mod ID: {partial_mod_id} for file {partial_filename} did not match exactly. Please report this issue on the GitHub repo.")
+            print(f"- Mod ID: {partial_mod_id} for file {partial_filename} did not match exactly.")
             sys.exit(1)
     
     # Check for exact matches
@@ -125,6 +128,9 @@ if __name__ == "__main__":
     exact_matches = fingerprint_response.get("data", {}).get("exactMatches", [])
     if not exact_matches:
         print("No mods found on CurseForge for the provided fingerprints.")
+    if len(exact_matches) < len(fingerprints):
+        print("ERROR: No unmatched or partial matches, but not all fingerprints matched exactly. This should not happen.")
+        sys.exit(1)
     
     # Check for updates and download latest versions
     print("Checking for updates for matched mods...")
