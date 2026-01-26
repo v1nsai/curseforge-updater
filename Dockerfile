@@ -5,6 +5,6 @@ RUN apt update && \
     apt clean && \
     python3 -m pip install --no-cache-dir murmurhash2 requests
 
-COPY updater.py /updater.py
+COPY src/ /
 
-ENTRYPOINT ["python3", "/updater.py", "/mods"]
+ENTRYPOINT ["python3", "/init.py", "/mods"]
