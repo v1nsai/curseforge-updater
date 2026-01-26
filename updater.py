@@ -99,7 +99,7 @@ if __name__ == "__main__":
         print(f"Error querying CurseForge API: {e}")
         sys.exit(1)
     
-    # Check for unmatched fingerprintsj
+    # Check for unmatched fingerprints
     print("Checking for unmatched fingerprints...")
     unmatched = fingerprint_response.get("data", {}).get("unmatchedFingerprints")
     if unmatched:
@@ -146,12 +146,8 @@ if __name__ == "__main__":
         original_fingerprint = str(match.get("file", {}).get("fileFingerprint"))
         
         original_filepath = mod_data.get(original_fingerprint)
-        if not original_filepath:
+        if not original_filepath or not Path(original_filepath).exists():
             print(f"Could not find original file for fingerprint {original_fingerprint}. This should not happen.")
-            sys.exit(1)
-        
-        if not Path(original_filepath).exists():
-            print(f"Original mod file {original_filepath} does not exist.")
             sys.exit(1)
         
         original_filename = Path(original_filepath).name

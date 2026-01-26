@@ -8,13 +8,13 @@ services:
         condition: service_completed_successfully       # in your docker-compose.yaml
 
   curseforge-updater:
-    build: 
-      context: https://github.com/v1nsai/curseforge-updater.git#develop
-      # context: ./ # uncomment for local development
-      dockerfile: Dockerfile
+    # build:                    # uncomment these lines to build locally 
+    #   context: ./
+    #   dockerfile: Dockerfile
+    image: doctor3w/curseforge-updater:latest
     container_name: curseforge-updater
     restart: "no"
     volumes:
-      - ./path/to/mods/folder:/mods # change to your mods folder path
+      - path/to/mod/folder:/mods # change to your mods folder path
     env_file:
       - .env
