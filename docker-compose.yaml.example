@@ -8,9 +8,9 @@ services:
         condition: service_completed_successfully       # in your docker-compose.yaml
 
   curseforge-updater:
-    build:                    # uncomment these lines to build locally 
-      context: ./
-      dockerfile: Dockerfile
+    # build:                    # uncomment these lines to build locally 
+    #   context: ./
+    #   dockerfile: Dockerfile
     image: doctor3w/curseforge-updater:latest
     pull_policy: always
     container_name: curseforge-updater
