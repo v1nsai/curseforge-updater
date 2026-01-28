@@ -5,8 +5,13 @@ Use with caution since it isn't highly tested yet.  At the moment it will loudly
 
 ## Usage
 ### Quickstart
-* `cp .env.example .env`
+```
+git clone https://github.com/v1nsai/curseforge-updater.git`
+cd curseforge-updater
+cp .env.example .env
+```
 * Fill in values for vars in `.env`.  I have only tested with Hytale `GAME_ID` but should work with any other game in Curseforge.
+* Update [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) with the location of your mods folder.
 * `docker compose up -d`
 
 ### Integrate with Dockerized server
