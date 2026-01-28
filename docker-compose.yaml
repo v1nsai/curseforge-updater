@@ -13,6 +13,7 @@ services:
     #   dockerfile: Dockerfile
     image: doctor3w/curseforge-updater:latest
     container_name: curseforge-updater
+    pull_policy: always
     restart: "no"
     volumes:
       - path/to/mod/folder:/mods # change to your mods folder path
