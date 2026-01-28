@@ -1,10 +1,13 @@
 FROM python:3.12-slim
 
+COPY requirements.txt /
 RUN apt update && \
     apt install -y jq curl && \
     apt clean && \
-    python3 -m pip install --no-cache-dir murmurhash2 requests
+    python3 -m pip install --no-cache-dir -r /requirements.txt && \
+    rm /requirements.txt
 
-COPY src/ /
+COPY src/ /app
+COPY .env /.env
 
-ENTRYPOINT ["python3", "/init.py", "/mods"]
+ENTRYPOINT ["python3", "/app/init.py", "/mods"]

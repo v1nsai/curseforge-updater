@@ -7,8 +7,8 @@ Scans a folder for mod files, checks for updates via CurseForge API, and downloa
 import os
 import sys
 from pathlib import Path
-import requests
-import murmurhash2
+import dotenv
+dotenv.load_dotenv('../.env')
 
 from functions import *
 

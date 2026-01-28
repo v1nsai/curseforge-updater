@@ -4,15 +4,29 @@ This is a Dockerized script that scans your game's mod folder and updates mods f
 Use with caution since it isn't highly tested yet.  At the moment it will loudly fail if anything unexpected happens, rather than letting silent failures cause a bigger problem.
 
 ## Usage
-### Quickstart
+### Docker Quickstart
 ```
 git clone https://github.com/v1nsai/curseforge-updater.git`
 cd curseforge-updater
 cp .env.example .env
+cp docker-compose.yaml.example docker-compose.yaml
 ```
 * Fill in values for vars in `.env`.  I have only tested with Hytale `GAME_ID` but should work with any other game in Curseforge.
-* Update [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) with the location of your mods folder.
+* Update [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) with the location of your mods folder in volumes.
 * `docker compose up -d`
+
+### Python Quickstart
+```
+git clone https://github.com/v1nsai/curseforge-updater.git`
+cd curseforge-updater
+# make sure python 3.11+ is installed
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 src/init.py <</path/to/your/mod/folder>>
+```
+* Fill in values for vars in `.env`.  I have only tested with Hytale `GAME_ID` but should work with any other game in Curseforge.
+* Run the script with the location of your mods 
 
 ### Integrate with Dockerized server
 If your server is already using Docker, you can also copy the [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) file into your project's compose file, it will pull and build the latest from the `develop` branch of this repo, so your mods get updated every time you restart your server. 
