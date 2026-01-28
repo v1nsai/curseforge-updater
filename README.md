@@ -4,9 +4,13 @@ This is a Dockerized script that scans your game's mod folder and updates mods f
 Use with caution since it isn't highly tested yet.  At the moment it will loudly fail if anything unexpected happens, rather than letting silent failures cause a bigger problem.
 
 ## Usage
-The easiest way to get started is to simply run the `docker-compose.yaml` file, just update the volume path with the location of your mods folder.
+### Quickstart
+* `cp .env.example .env`
+* Fill in values for vars in `.env`.  I have only tested with Hytale `GAME_ID` but should work with any other game in Curseforge.
+* `docker compose up -d`
 
-You can also copy the `docker-compose.yaml` file into your project's compose file, it will pull and build the latest from the `develop` branch of this repo, so your mods get updated every time you restart your server. 
+### Integrate with Dockerized server
+If your server is already using Docker, you can also copy the [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) file into your project's compose file, it will pull and build the latest from the `develop` branch of this repo, so your mods get updated every time you restart your server. 
 
 * Copy the [.env.example](https://github.com/v1nsai/curseforge-updater/blob/develop/.env.example) file into the same folder as your `docker-compose.yaml` file as `.env` and fill in the variables
 * Copy the `curseforge-updater` service from the `docker-compose.yaml` in this repo to your `docker-compose.yaml` file
@@ -25,5 +29,4 @@ You can also copy the `docker-compose.yaml` file into your project's compose fil
 ## Development
 Uncomment the `$.services.curseforge-updater.build.context` to use your local Dockerfile instead of the latest in git.  See [docker-compose.yaml](https://github.com/v1nsai/curseforge-updater/blob/develop/docker-compose.yaml) for details
 
-Clean rebuild one-liner:  
-`docker compose down && docker compose build --no-cache && docker compose up -d --force-recreate && docker compose logs -f`
+The `./scripts` directory has a few helper scripts for clean rebuilding and clean recreating.
