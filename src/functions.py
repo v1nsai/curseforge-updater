@@ -1,3 +1,4 @@
+from datetime import datetime
 import sys
 import murmurhash2
 import requests
@@ -97,26 +98,35 @@ def verify_fingerprint_matches(fingerprint_response, mod_data, fingerprints):
     return exact_matches
 
 def update_mod(match, mod_data, mod_folder):
-    mod_id = match.get("id")
+    # 
+    # Get latest file info and handle if multiple files exist
     latest_files = match.get("latestFiles", [])
-    
     if not latest_files:
         raise ValueError(f"No latest files found for mod ID {mod_id}.")
-        
-    latest_file = latest_files[0]
+    else:
+        latest_file = latest_files[0]
+    if len(latest_files) > 1:
+        latest_date = datetime.fromisoformat(latest_files[0].get("fileDate").replace("Z", "+00:00"))
+        for file in latest_files[1:]:
+            file_date = datetime.fromisoformat(file.get("fileDate").replace("Z", "+00:00"))
+            if file_date > latest_date:
+                latest_date = file_date
+                latest_file = file
     latest_filename = latest_file.get("fileName")
+
+    # Get original file info
     original_fingerprint = str(match.get("file", {}).get("fileFingerprint"))
-    
     original_filepath = mod_data.get(original_fingerprint)
     if not original_filepath or not Path(original_filepath).exists():
         raise FileNotFoundError(
             f"Could not find original file for fingerprint {original_fingerprint}. This should not happen."
         )
-    
     original_filename = Path(original_filepath).name
     if not original_filename:
         raise ValueError(f"Could not determine original filename from path {original_filepath}.")
     
+    # Compare filenames and download if different
+    mod_id = match.get("id")
     if latest_filename == original_filename:
         print(f"Mod {original_filename} is already up to date.")
         return None

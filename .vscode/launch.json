@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/init.py",
             "args": [
-                "/home/doctor_ew/hytale/hytale-server-docker/server-files/mods"
+                "${workspaceFolder}/test"
             ],
             "console": "integratedTerminal",
             "envFile": "${workspaceFolder}/.env"
