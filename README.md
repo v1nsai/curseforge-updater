@@ -28,7 +28,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 * Fill in values for vars in `.env`.  I have only tested with Hytale `GAME_ID` but should work with any other game in Curseforge.
-* Run the script with the location of your mods (still inside the venv environment)
+* Run the script with the location of your mods (still inside the venv environment)  
   `python3 src/init.py <</path/to/your/mod/folder>>`
 
 ### Integrate with Dockerized server
