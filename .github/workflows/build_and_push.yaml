@@ -40,5 +40,5 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/curseforge-updater:latest
             ${{ secrets.DOCKER_USERNAME }}/curseforge-updater:${{ steps.version.outputs.version }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/curseforge-updater:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/curseforge-updater:buildcache,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
