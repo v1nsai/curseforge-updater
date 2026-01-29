@@ -1,8 +1,7 @@
-# Curseforge Updater
-
 ![Build and Push Docker Image](https://github.com/v1nsai/curseforge-updater/actions/workflows/build_and_push.yaml/badge.svg)
 ![Version](https://img.shields.io/github/v/tag/v1nsai/curseforge-updater?label=version)
 ![Docker](https://img.shields.io/docker/v/doctor3w/curseforge-updater?label=docker)
+# Curseforge Updater
 
 This is a Dockerized script that scans your game's mod folder and updates mods found in there.  So far it is only tested with Hytale but likely works with other games (adjust the file types if your game uses mods in files other than `.jar` or `.zip`).
 
