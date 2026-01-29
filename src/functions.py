@@ -1,5 +1,4 @@
 from datetime import datetime
-import sys
 import murmurhash2
 import requests
 
@@ -113,6 +112,7 @@ def update_mod(match, mod_data, mod_folder):
                 latest_date = file_date
                 latest_file = file
     latest_filename = latest_file.get("fileName")
+    latest_fingerprint = str(latest_file.get("fileFingerprint"))
 
     # Get original file info
     original_fingerprint = str(match.get("file", {}).get("fileFingerprint"))
@@ -125,9 +125,9 @@ def update_mod(match, mod_data, mod_folder):
     if not original_filename:
         raise ValueError(f"Could not determine original filename from path {original_filepath}.")
     
-    # Compare filenames and download if different
+    # Compare fingerprints and download if different
     mod_id = match.get("id")
-    if latest_filename == original_filename:
+    if latest_fingerprint == original_fingerprint:
         print(f"Mod {original_filename} is already up to date.")
         return None
     else:

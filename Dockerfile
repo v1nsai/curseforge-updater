@@ -8,6 +8,5 @@ RUN apt update && \
     rm /requirements.txt
 
 COPY src/ /app
-COPY .env /.env
 
 ENTRYPOINT ["python3", "/app/init.py", "/mods"]
