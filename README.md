@@ -15,7 +15,7 @@ cp docker-compose.example.yaml docker-compose.yaml
 ```
 * Fill in values for vars in `.env`.  I have only tested with Hytale `GAME_ID` but should work with any other game in Curseforge.
 * Update `docker-compose.yaml` with the location of your mods folder in volumes.
-* `docker compose up -d`
+* `docker compose up -d && docker compose logs -f`
 
 ### Python Quickstart
 ```
