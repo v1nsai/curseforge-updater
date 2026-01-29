@@ -1,2 +1,3 @@
 murmurhash2
 requests
+python-dotenv
