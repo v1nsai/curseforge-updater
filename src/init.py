@@ -49,11 +49,6 @@ if __name__ == "__main__":
     updated_mods = []
     archived_mods = []
     for match in exact_matches:
-        if match.get('file').get('fileStatus') == 8: # 8 = "Archived"
-            archived_filename = match.get('file').get('fileName')
-            print(f"WARNING: Mod ID {archived_filename} is archived. Skipping update, you should delete it.")
-            archived_mods.append(f'{archived_filename} is archived and should be deleted.')
-            continue
         result = update_mod(match, mod_data, mod_folder)
         if result:
             updated_mods.append(result)
